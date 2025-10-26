@@ -4,7 +4,7 @@
         { self } :
             {
                 lib =
-                    { age , writeShellApplication } :
+                    { age , coreutils , writeShellApplication } :
                         let
                             implementation =
                                 { encrypted , identity } :
