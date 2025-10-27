@@ -19,15 +19,16 @@
                                                                 runtimeInputs = [ age ] ;
                                                                 text =
                                                                     ''
-                                                                        echo 8c127ed0-7763-49d5-8dad-4eacf26d952b
+                                                                        exit 99
+                                                                        echo 8c127ed0-7763-49d5-8dad-4eacf26d952b >2
                                                                         IDENTITY=${ identity ( setup : setup ) }
-                                                                        echo 7f33b896-20a5-45c4-99db-231179a89edd
+                                                                        echo 7f33b896-20a5-45c4-99db-231179a89edd >2
                                                                         ENCRYPTED=${ encrypted ( setup : setup ) }
-                                                                        echo 13d73313-0621-4bc9-8b06-969e1ef2bbc5
+                                                                        echo 13d73313-0621-4bc9-8b06-969e1ef2bbc5 >2
                                                                         age --identity "$IDENTITY" "$ENCRYPTED" > /mount/secret
-                                                                        echo 03c27d5a-129c-4337-925c-7b3b1f8cddc6
+                                                                        echo 03c27d5a-129c-4337-925c-7b3b1f8cddc6 >2
                                                                         chmod 0400 /mount/secret
-                                                                        echo e1c9a9b7-fbd6-46e3-ae4f-1e4ce29f1059
+                                                                        echo e1c9a9b7-fbd6-46e3-ae4f-1e4ce29f1059 >2
                                                                     '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
