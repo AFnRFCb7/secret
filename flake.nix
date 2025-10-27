@@ -59,9 +59,9 @@
                                                                         text =
                                                                             let
                                                                                 x = implementation { encrypted = encrypted ; identity = identity ; } ;
-                                                                                observed = builtins.attrNames x.targets ;
+                                                                                observed = builtins.attrNames x ;
                                                                                 in
-                                                                                    if [ "secret" ] == observed
+                                                                                    if [ "init" "targets" ] == observed
                                                                                     then
                                                                                         ''
                                                                                             OUT="$1"
