@@ -71,7 +71,7 @@
                                                                                         ''
                                                                                             OUT=$1
                                                                                             touch "$OUT"
-                                                                                            failure attributes
+                                                                                            failure attributes ${ builtins.toJSON observed }
                                                                                         '' ;
                                                                     }
                                                             )
