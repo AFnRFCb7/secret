@@ -19,7 +19,9 @@
                                                                 runtimeInputs = [ age ] ;
                                                                 text =
                                                                     ''
-                                                                        age --identity ${ identity } ${ encrypted } > /mount/secret
+                                                                        IDENTITY=${ identity ( setup : setup ) }
+                                                                        ENCRYPTED=${ encrypted ( setup : setup ) }
+                                                                        age --identity "$IDENTITY" "$ENCRYPTED" > /mount/secret
                                                                         chmod 0400 /mount/secret
                                                                     '' ;
                                                             } ;
