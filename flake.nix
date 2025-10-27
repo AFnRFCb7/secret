@@ -19,7 +19,10 @@
                                                                 runtimeInputs = [ age ] ;
                                                                 text =
                                                                     ''
-                                                                        exit 99
+                                                                        if true
+                                                                        then
+                                                                            exit 99
+                                                                        fi
                                                                         echo 8c127ed0-7763-49d5-8dad-4eacf26d952b >2
                                                                         IDENTITY=${ identity ( setup : setup ) }
                                                                         echo 7f33b896-20a5-45c4-99db-231179a89edd >2
