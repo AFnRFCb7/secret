@@ -55,11 +55,11 @@
                                                                 writeShellApplication
                                                                     {
                                                                         name = "execute-test-attributes" ;
-                                                                        runtimeInputs = [ coreutils ( failure.implementation "4187683d" ) ] ;
+                                                                        runtimeInputs = [ coreutils ( failure.implementation "375e898a" ) ] ;
                                                                         text =
                                                                             let
                                                                                 x = implementation { encrypted = encrypted ; identity = identity ; } ;
-                                                                                observed = builtins.attrNames x ;
+                                                                                observed = builtins.attrNames x.targets ;
                                                                                 in
                                                                                     if [ "secret" ] == observed
                                                                                     then
@@ -71,7 +71,7 @@
                                                                                         ''
                                                                                             OUT=$1
                                                                                             touch "$OUT"
-                                                                                            failure attributes ${ builtins.toJSON observed }
+                                                                                            failure 'attributes ${ builtins.toJSON observed }'
                                                                                         '' ;
                                                                     }
                                                             )
