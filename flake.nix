@@ -19,15 +19,15 @@
                                                                 runtimeInputs = [ age ] ;
                                                                 text =
                                                                     ''
-                                                                        echo 1
+                                                                        echo 8c127ed0-7763-49d5-8dad-4eacf26d952b
                                                                         IDENTITY=${ identity ( setup : setup ) }
-                                                                        echo 2
+                                                                        echo 7f33b896-20a5-45c4-99db-231179a89edd
                                                                         ENCRYPTED=${ encrypted ( setup : setup ) }
-                                                                        echo 3
+                                                                        echo 13d73313-0621-4bc9-8b06-969e1ef2bbc5
                                                                         age --identity "$IDENTITY" "$ENCRYPTED" > /mount/secret
-                                                                        echo 4
+                                                                        echo 03c27d5a-129c-4337-925c-7b3b1f8cddc6
                                                                         chmod 0400 /mount/secret
-                                                                        echo 5
+                                                                        echo e1c9a9b7-fbd6-46e3-ae4f-1e4ce29f1059
                                                                     '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
