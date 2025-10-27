@@ -81,7 +81,7 @@
                                                                         text =
                                                                             let
                                                                                 x = implementation { encrypted = encrypted ; identity = identity ; } ;
-                                                                                observed = builtins.toString ( x { resources = resources ; self = self ; } ) ;
+                                                                                observed = builtins.toString x ;
                                                                             in
                                                                                 if expected == observed then
                                                                                     ''
