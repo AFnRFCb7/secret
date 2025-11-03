@@ -83,8 +83,8 @@
                                                                         runtimeInputs = [ coreutils ( failure.implementation "9507ef9d" ) ] ;
                                                                         text =
                                                                             let
-                                                                                x = implementation { encrypted = encrypted ; identity = identity ; stores = stores ; } ;
-                                                                                observed = builtins.toString ( x.init { resources = resources ; self = self ; } ) ;
+                                                                                x = implementation { encrypted = encrypted ; identity = identity ; } ;
+                                                                                observed = builtins.toString ( x.init { resources = resources ; self = self ; stores = stores ; } ) ;
                                                                             in
                                                                                 if expected == observed then
                                                                                     ''
