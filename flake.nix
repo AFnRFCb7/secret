@@ -10,7 +10,7 @@
                                 { encrypted , identity } :
                                     {
                                         init =
-                                            { resources , self , stores } :
+                                            { resources , self } :
                                                 let
                                                     application =
                                                         writeShellApplication
@@ -38,8 +38,7 @@
                                             failure ,
                                             mkDerivation ,
                                             resources ? null ,
-                                            self ? null ,
-                                            stores ? null
+                                            self ? null
                                         } :
                                             mkDerivation
                                                 {
@@ -84,7 +83,7 @@
                                                                         text =
                                                                             let
                                                                                 x = implementation { encrypted = encrypted ; identity = identity ; } ;
-                                                                                observed = builtins.toString ( x.init { resources = resources ; self = self ; stores = stores ; } ) ;
+                                                                                observed = builtins.toString ( x.init { resources = resources ; self = self ; } ) ;
                                                                             in
                                                                                 if expected == observed then
                                                                                     ''
