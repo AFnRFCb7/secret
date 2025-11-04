@@ -4,129 +4,73 @@
         { self } :
             {
                 lib =
-                    { age , coreutils , writeShellApplication } :
-                        let
-                            implementation =
-                                { encrypted , identity } :
-                                    {
-                                        init =
-                                            { pkgs , resources , self } :
-                                                let
-                                                    application =
-                                                        pkgs.writeShellApplication
-                                                            {
-                                                                name = "init" ;
-                                                                runtimeInputs = [ age ] ;
-                                                                text =
-                                                                    ''
-                                                                        IDENTITY=${ identity ( setup : setup ) }
-                                                                        ENCRYPTED=${ encrypted ( setup : setup ) }
-                                                                        age --decrypt --identity "$IDENTITY" "$ENCRYPTED" > /mount/secret
-                                                                        chmod 0400 /mount/secret
-                                                                    '' ;
-                                                            } ;
-                                                    in "${ application }/bin/init" ;
-                                        targets = [ "secret" ] ;
-                                    } ;
-                            in
+                    let
+                        implementation =
+                            { encrypted , identity } :
                                 {
-                                    check =
-                                        {
-                                            expected ,
-                                            encrypted ,
-                                            identity ,
-                                            failure ,
-                                            mkDerivation ,
-                                            pkgs ,
-                                            resources ? null ,
-                                            self ? null
-                                        } :
-                                            mkDerivation
-                                                {
-                                                    installPhase =
-                                                        ''
-                                                            execute-test-attributes "$out"
-                                                            execute-test-init "$out"
-                                                            execute-test-targets "$out"
-                                                        '' ;
-                                                    name = "check" ;
-                                                    nativeBuildInputs =
-                                                        [
-                                                            (
-                                                                writeShellApplication
-                                                                    {
-                                                                        name = "execute-test-attributes" ;
-                                                                        runtimeInputs = [ coreutils ( failure.implementation "375e898a" ) ] ;
-                                                                        text =
-                                                                            let
-                                                                                x = implementation { encrypted = encrypted ; identity = identity ; } ;
-                                                                                observed = builtins.attrNames x ;
-                                                                                in
-                                                                                    if [ "init" "targets" ] == observed
-                                                                                    then
-                                                                                        ''
-                                                                                            OUT="$1"
-                                                                                            touch "$OUT"
-                                                                                        ''
-                                                                                    else
-                                                                                        ''
-                                                                                            OUT=$1
-                                                                                            touch "$OUT"
-                                                                                            failure 'attributes ${ builtins.toJSON observed }'
-                                                                                        '' ;
-                                                                    }
-                                                            )
-                                                            (
-                                                                writeShellApplication
-                                                                    {
-                                                                        name = "execute-test-init" ;
-                                                                        runtimeInputs = [ coreutils ( failure.implementation "9507ef9d" ) ] ;
-                                                                        text =
-                                                                            let
-                                                                                x = implementation { encrypted = encrypted ; identity = identity ; } ;
-                                                                                observed = builtins.toString ( x.init { pkgs = pkgs ; resources = resources ; self = self ; } ) ;
-                                                                            in
-                                                                                if expected == observed then
-                                                                                    ''
-                                                                                        OUT="$1"
-                                                                                        touch "$OUT"
-                                                                                    ''
-                                                                                else
-                                                                                    ''
-                                                                                        OUT="$1"
-                                                                                        touch "$OUT"
-                                                                                        failure init "We expected ${ expected } but we observed ${ observed }"
-                                                                                    '' ;
-                                                                    }
-                                                            )
-                                                            (
-                                                                writeShellApplication
-                                                                    {
-                                                                        name = "execute-test-targets" ;
-                                                                        runtimeInputs = [ coreutils ( failure.implementation "8eadd518" ) ] ;
-                                                                        text =
-                                                                            let
-                                                                                x = implementation { encrypted = encrypted ; identity = identity ; } ;
-                                                                                observed = x.targets ;
-                                                                                in
-                                                                                    if [ "secret" ] == observed
-                                                                                    then
-                                                                                        ''
-                                                                                            OUT="$1"
-                                                                                            touch "$OUT"
-                                                                                        ''
-                                                                                    else
-                                                                                        ''
-                                                                                            OUT=$1
-                                                                                            touch "$OUT"
-                                                                                            failure targets
-                                                                                        '' ;
-                                                                    }
-                                                            )
-                                                        ] ;
-                                                    src = ./. ;
-                                                } ;
-                                    implementation = implementation ;
+                                    init =
+                                        { pkgs , resources , self } :
+                                            let
+                                                application =
+                                                    pkgs.writeShellApplication
+                                                        {
+                                                            name = "init" ;
+                                                            runtimeInputs = [ pkgs.age ] ;
+                                                            text =
+                                                                ''
+                                                                    IDENTITY=${ identity ( setup : setup ) }
+                                                                    ENCRYPTED=${ encrypted ( setup : setup ) }
+                                                                    age --decrypt --identity "$IDENTITY" "$ENCRYPTED" > /mount/secret
+                                                                    chmod 0400 /mount/secret
+                                                                '' ;
+                                                        } ;
+                                                in "${ application }/bin/init" ;
+                                    targets = [ "secret" ] ;
                                 } ;
+                        in
+                            {
+                                check =
+                                    {
+                                        expected ,
+                                        encrypted ,
+                                        identity ,
+                                        failure ,
+                                        pkgs ,
+                                        resources ? null ,
+                                        self ? null
+                                    } :
+                                        pkgs.mkDerivation
+                                            {
+                                                installPhase =
+                                                    ''
+                                                        execute-test "$out"
+                                                    '' ;
+                                                name = "check" ;
+                                                nativeBuildInputs =
+                                                    [
+                                                        (
+                                                            pkgs.writeShellApplication
+                                                                {
+                                                                    name = "execute-test-attributes" ;
+                                                                    runtimeInputs = [ pkgs.coreutils failure ] ;
+                                                                    text =
+                                                                        let
+                                                                            init = implementation { pkgs = pkgs ; resources = resources ; self = self ; } ;
+                                                                            instance = implementation { encrypted = encrypted ; identity = identity ; } ;
+                                                                            in
+                                                                                ''
+                                                                                    OUT="$1"
+                                                                                    touch "$OUT"
+                                                                                    ${ if [ "init" "targets" ] != builtins.attrNames instance then failure c8b01223 "We expected the secret names to be init targets but we observed ${ builtins.toJSON ( builtins.attrNames instance ) }" else "#" }
+                                                                                    ${ if expected != init then failure 2e2ca58a "We expected the init to be ${ builtins.toString expected } but we observed ${ builtins.toString init }" else "#" }
+                                                                                    ${ if [ "secret" ] != instance.targets then failure 2c9823c8 "We expected the targets to be secret but we observed ${ builtins.toJSON instance.targets }" else "#" }
+                                                                                '' ;
+                                                                }
+                                                        )
+                                                    ] ;
+                                                src = ./. ;
+                                            } ;
+                                implementation = implementation ;
+                            } ;
             } ;
 }
