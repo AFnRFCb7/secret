@@ -56,7 +56,7 @@
                                                                 writeShellApplication
                                                                     {
                                                                         name = "execute-test" ;
-                                                                        runtimeInputs = [ coreutils ] ;
+                                                                        runtimeInputs = [ coreutils failure ] ;
                                                                         text =
                                                                             let
                                                                                 init = instance.init { pkgs = pkgs ; resources = resources ; self = self ; } ;
