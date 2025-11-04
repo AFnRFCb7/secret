@@ -39,7 +39,7 @@
                                         resources ? null ,
                                         self ? null
                                     } :
-                                        pkgs.mkDerivation
+                                        pkgs.stdenv.mkDerivation
                                             {
                                                 installPhase =
                                                     ''
