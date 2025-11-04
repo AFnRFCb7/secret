@@ -37,7 +37,7 @@
                                             identity ,
                                             failure ,
                                             mkDerivation ,
-                                            pkgs ? null ,
+                                            pkgs ,
                                             resources ? null ,
                                             self ? null
                                         } :
