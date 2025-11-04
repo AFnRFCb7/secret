@@ -47,7 +47,7 @@
                                                 {
                                                     installPhase =
                                                         ''
-                                                            execute-test "$0"
+                                                            execute-test "$out"
                                                         '' ;
                                                     name = "check" ;
                                                     nativeBuildInputs =
