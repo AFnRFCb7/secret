@@ -13,7 +13,7 @@
                                             { pkgs , resources , self } :
                                                 let
                                                     application =
-                                                        writeShellApplication
+                                                        pkgs.writeShellApplication
                                                             {
                                                                 name = "init" ;
                                                                 runtimeInputs = [ age ] ;
