@@ -51,7 +51,7 @@
                                                         (
                                                             pkgs.writeShellApplication
                                                                 {
-                                                                    name = "execute-test-attributes" ;
+                                                                    name = "execute-test" ;
                                                                     runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                     text =
                                                                         let
