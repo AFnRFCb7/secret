@@ -10,7 +10,7 @@
                                 { encrypted , identity } :
                                     {
                                         init =
-                                            { mount , pkgs , resources , stage } :
+                                            { mount , pkgs , resources } :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
