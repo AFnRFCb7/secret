@@ -38,8 +38,7 @@
                                             failure ,
                                             mount ? null ,
                                             pkgs ,
-                                            resources ? null ,
-                                            stage ? null
+                                            resources ? null
                                         } :
                                             pkgs.stdenv.mkDerivation
                                                 {
@@ -57,7 +56,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; stage = stage ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
                                                                                 instance = implementation { encrypted = encrypted ; identity = identity ; } ;
                                                                                 in
                                                                                     ''
