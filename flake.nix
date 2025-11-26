@@ -4,7 +4,7 @@
         { self } :
             {
                 lib =
-                    { } :
+                    { failure } :
                         let
                             implementation =
                                 { encrypted , identity } :
@@ -16,11 +16,29 @@
                                                         pkgs.writeShellApplication
                                                             {
                                                                 name = "init" ;
-                                                                runtimeInputs = [ pkgs.age ] ;
+                                                                runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                 text =
                                                                     ''
-                                                                        IDENTITY=${ identity ( setup : setup ) }
-                                                                        ENCRYPTED=${ encrypted ( setup : setup ) }
+                                                                        if [[ -t 0 ]]
+                                                                        then
+                                                                            # shellcheck disable=SC2034
+                                                                            HAS_STANDARD_INPUT=false
+                                                                            # shellcheck disable=SC2034
+                                                                            STANDARD_INPUT=
+                                                                        else
+                                                                            # shellcheck disable=SC2034
+                                                                            HAS_STANDARD_INPUT=true
+                                                                            # shellcheck disable=SC2034
+                                                                            STANDARD_INPUT="$( cat )" || failure ca6dd82a
+                                                                        fi
+                                                                        if $HAS_STANDARD_INPUT
+                                                                        then
+                                                                            IDENTITY=${ identity ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) }
+                                                                            ENCRYPTED=${ encrypted ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "@"'' ) }
+                                                                        else
+                                                                            IDENTITY=${ identity ( setup : ''${ setup } "$@"'' ) }
+                                                                            ENCRYPTED=${ encrypted ( setup : ''${ setup } "@"'' ) }
+                                                                        fi
                                                                         age --decrypt --identity "$IDENTITY" "$ENCRYPTED" > /mount/secret
                                                                         chmod 0400 /mount/secret
                                                                     '' ;
