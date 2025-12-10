@@ -74,7 +74,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; wrap = wrap ; } ;
                                                                                 instance = implementation { encrypted = encrypted ; identity = identity ; } ;
                                                                                 in
                                                                                     ''
