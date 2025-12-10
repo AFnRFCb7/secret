@@ -56,7 +56,8 @@
                                             failure ,
                                             mount ? null ,
                                             pkgs ,
-                                            resources ? null
+                                            resources ? null ,
+                                            wrap ? "66ff96f9"
                                         } :
                                             pkgs.stdenv.mkDerivation
                                                 {
