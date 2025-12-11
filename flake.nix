@@ -10,7 +10,7 @@
                                 { encrypted , identity } :
                                     {
                                         init =
-                                            { mount , pkgs , resources , wrap } :
+                                            { mount , pkgs , resources , root , wrap } :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -57,6 +57,7 @@
                                             mount ? null ,
                                             pkgs ,
                                             resources ? null ,
+                                            root ? "e6471e78" ,
                                             wrap ? "66ff96f9"
                                         } :
                                             pkgs.stdenv.mkDerivation
@@ -75,7 +76,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; wrap = wrap ; } ;
+                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; root = root ; wrap = wrap ; } ;
                                                                                 instance = implementation { encrypted = encrypted ; identity = identity ; } ;
                                                                                 in
                                                                                     ''
