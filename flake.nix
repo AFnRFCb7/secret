@@ -45,8 +45,7 @@
                                     check =
                                         {
                                             expected ,
-                                            encrypted ,
-                                            identity ,
+                                            setup ,
                                             failure ,
                                             mount ? null ,
                                             pkgs ,
@@ -71,7 +70,7 @@
                                                                         text =
                                                                             let
                                                                                 init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; root = root ; wrap = wrap ; } ;
-                                                                                instance = implementation { encrypted = encrypted ; identity = identity ; } ;
+                                                                                instance = implementation { setup = setup ; } ;
                                                                                 in
                                                                                     ''
                                                                                         OUT="$1"
