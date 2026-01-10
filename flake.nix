@@ -20,6 +20,7 @@
                                                                 runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                 text =
                                                                     ''
+                                                                        # 915ed4fa
                                                                         if [[ -t 0 ]]
                                                                         then
                                                                             # shellcheck disable=SC2034
