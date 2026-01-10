@@ -8,10 +8,10 @@
                     { failure } :
                         let
                             implementation =
-                                { encrypted , identity } :
+                                { setup } :
                                     {
                                         init =
-                                            { mount , pkgs , resources , root , wrap } :
+                                            { mount , pkgs , resources , root , wrap } @primary :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -19,31 +19,23 @@
                                                                 name = "init" ;
                                                                 runtimeInputs = [ pkgs.age pkgs.coreutils ] ;
                                                                 text =
-                                                                    ''
-                                                                        # 915ed4fa
-                                                                        if [[ -t 0 ]]
-                                                                        then
-                                                                            # shellcheck disable=SC2034
-                                                                            HAS_STANDARD_INPUT=false
-                                                                            # shellcheck disable=SC2034
-                                                                            STANDARD_INPUT=
-                                                                        else
-                                                                            # shellcheck disable=SC2034
-                                                                            HAS_STANDARD_INPUT=true
-                                                                            # shellcheck disable=SC2034
-                                                                            STANDARD_INPUT="$( cat )" || failure ca6dd82a
-                                                                        fi
-                                                                        if $HAS_STANDARD_INPUT
-                                                                        then
-                                                                            IDENTITY=${ identity ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "$@"'' ) }
-                                                                            ENCRYPTED=${ encrypted ( setup : ''echo "$STANDARD_INPUT" | ${ setup } "@"'' ) }
-                                                                        else
-                                                                            IDENTITY=${ identity ( setup : ''${ setup } "$@"'' ) }
-                                                                            ENCRYPTED=${ encrypted ( setup : ''${ setup } "@"'' ) }
-                                                                        fi
-                                                                        age --decrypt --identity "$IDENTITY" "$ENCRYPTED" > /mount/secret
-                                                                        chmod 0400 /mount/secret
-                                                                    '' ;
+                                                                    let
+                                                                        stage =
+                                                                            let
+                                                                                application =
+                                                                                    pkgs.writeShellApplication
+                                                                                        {
+                                                                                            name = "stage" ;
+                                                                                            runtimeInputs = [ pkgs.coreutils ] ;
+                                                                                            text = setup primary ;
+                                                                                        } ;
+                                                                                in "${ application }/bin/stage" ;
+                                                                        in
+                                                                            ''
+                                                                                ${ stage }
+                                                                                age --decrypt --identity /scratch/identity /scratch/encrypted > /mount/secret
+                                                                                chmod 0400 /mount/secret
+                                                                            '' ;
                                                             } ;
                                                     in "${ application }/bin/init" ;
                                         targets = [ "secret" ] ;
