@@ -47,10 +47,11 @@
                                             expected ,
                                             setup ,
                                             failure ,
-                                            mount ? null ,
+                                            pid ? "76e2ba94" ,
                                             pkgs ,
                                             resources ? null ,
                                             root ? "e6471e78" ,
+                                            sequential ? "bf61fc17" ,
                                             wrap ? "66ff96f9"
                                         } :
                                             pkgs.stdenv.mkDerivation
