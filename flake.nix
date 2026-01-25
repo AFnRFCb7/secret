@@ -70,7 +70,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; root = root ; wrap = wrap ; } ;
+                                                                                init = instance.init { pid = pid ; pkgs = pkgs ; resources = resources ; root = root ; sequential = sequential ; wrap = wrap ; } ;
                                                                                 instance = implementation { setup = setup ; } ;
                                                                                 in
                                                                                     ''
