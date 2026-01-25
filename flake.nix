@@ -11,7 +11,7 @@
                                 { setup } :
                                     {
                                         init =
-                                            { mount , pkgs , resources , root , wrap } @primary :
+                                            { pid , pkgs , resources , root , sequential , wrap } @primary :
                                                 let
                                                     application =
                                                         pkgs.writeShellApplication
@@ -47,10 +47,11 @@
                                             expected ,
                                             setup ,
                                             failure ,
-                                            mount ? null ,
+                                            pid ? "76e2ba94" ,
                                             pkgs ,
                                             resources ? null ,
                                             root ? "e6471e78" ,
+                                            sequential ? "bf61fc17" ,
                                             wrap ? "66ff96f9"
                                         } :
                                             pkgs.stdenv.mkDerivation
@@ -69,7 +70,7 @@
                                                                         runtimeInputs = [ pkgs.coreutils failure ] ;
                                                                         text =
                                                                             let
-                                                                                init = instance.init { mount = mount ; pkgs = pkgs ; resources = resources ; root = root ; wrap = wrap ; } ;
+                                                                                init = instance.init { pid = pid ; pkgs = pkgs ; resources = resources ; root = root ; sequential = sequential ; wrap = wrap ; } ;
                                                                                 instance = implementation { setup = setup ; } ;
                                                                                 in
                                                                                     ''
